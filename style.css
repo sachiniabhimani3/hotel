@@ -1,0 +1,24 @@
+/* Custom styles for the hotel booking page */
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.hero-section {
+    background-image: url('your-hero-image.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 50px 0;
+}
+
+#booking-form {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+footer {
+    padding: 10px 0;
+    background-color: #f1f1f1;
+    margin-top: 30px;
+}
