@@ -11,65 +11,54 @@
 </head>
 <body>
 
-<header>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Sansilta Hotel</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">My Bookings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact & Help</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Welcome to Sansilta Hotel</h1>
-                <p>Your perfect getaway.</p>
+<div id="content">
+    <header>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Sansilta Hotel</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">My Bookings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact & Help</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-6">
-                <!-- Booking Form -->
-                <form id="booking-form">
-                    <div class="form-group">
-                        <input type="date" class="form-control" id="checkin-date" placeholder="Check-in Date" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="date" class="form-control" id="checkout-date" placeholder="Check-out Date" required>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" id="room-type" required>
-                            <option value="">Select Room Type</option>
-                            <option value="single">Single Room</option>
-                            <option value="double">Double Room</option>
-                            <option value="suite">Suite</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control" id="guests" placeholder="Number of Guests" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Book Now</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+        </nav>
+    </header>
 
-<!-- Footer -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="welcome-message">
+                            <h1>Welcome to Sansilta Hotel</h1>
+                            <p>Your perfect getaway.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Booking Form -->
+                        <!-- ... booking form ... -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional sections of your page here -->
+
+    </main>
+</div>
+
 <footer class="bg-light text-center text-lg-start">
     <div class="text-center p-3">
         © 2023 Sansilta Hotel:
