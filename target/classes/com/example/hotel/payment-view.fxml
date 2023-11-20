@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="paymentVBox" alignment="CENTER" spacing="20" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.example.hotel.controller.paymentController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Payment Management" />
+   <ImageView fitHeight="102.0" fitWidth="222.0" pickOnBounds="true">
+      <image>
+         <Image url="@payment.jpg" />
+      </image>
+   </ImageView>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Booking ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="bookingIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Amount:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="amountField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Additional Charges:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="additionalChargesField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Taxes:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="taxesField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="Total Amount:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="totalAmountField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label text="Payment Date:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <DatePicker fx:id="paymentDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label text="Payment Method:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <ComboBox fx:id="paymentMethodComboBox" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Cash" />
+                    <String fx:value="Credit Card" />
+                    <String fx:value="Bank Transfer" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <ComboBox fx:id="statusComboBox" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Pending" />
+                    <String fx:value="Paid" />
+                    <String fx:value="Cancelled" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+    <HBox alignment="CENTER" spacing="10">
+        <Button text="Generate Bill" />
+        <Button text="Save Bill Details" />
+    </HBox>
+</VBox>
