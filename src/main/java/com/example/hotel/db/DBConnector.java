@@ -2,6 +2,7 @@ package com.example.hotel.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBConnector {
@@ -15,4 +16,6 @@ public class DBConnector {
         conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         return conn;
     }
+
+
 }

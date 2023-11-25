@@ -39,8 +39,7 @@
         <Label text="Taxes:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <TextField fx:id="taxesField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label text="Total Amount:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="totalAmountField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
 
         <Label text="Payment Date:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <DatePicker fx:id="paymentDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
@@ -82,7 +81,13 @@
       </rowConstraints>
     </GridPane>
     <HBox alignment="CENTER" spacing="10">
-        <Button text="Generate Bill" />
-        <Button text="Save Bill Details" />
+        <Button text="Generate Bill" onAction="#handleGenerateBillAction"/>
+        <Button text="Save Bill Details" onAction="#handleSaveBillDetailsAction"/>
+
     </HBox>
+    <Label text="Total Amount:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <TextField fx:id="totalAmountField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+<!--    <Label text="Total Amount:" GridPane.columnIndex="0" GridPane.rowIndex="4" />-->
+<!--    <Label fx:id="totalAmountLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />-->
+
 </VBox>

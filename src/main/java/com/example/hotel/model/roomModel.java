@@ -8,6 +8,19 @@ import java.util.List;
 
 public class roomModel {
 
+    private static roomModel instance;
+
+    // Private constructor
+    private roomModel() {}
+
+    // Public method to get the instance
+    public static roomModel getInstance() {
+        if (instance == null) {
+            instance = new roomModel();
+        }
+        return instance;
+    }
+
     // Room as a nested static class inside RoomModel
     public static class Room {
         private int roomId;
@@ -25,6 +38,28 @@ public class roomModel {
             this.amenities = amenities;
             this.rate = rate;
             this.status = status;
+        }
+
+        public static List<Room> getAllRooms() {
+            List<Room> rooms = new ArrayList<>();
+            String sql = "SELECT * FROM Rooms";
+            try (Connection conn = DBConnector.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    rooms.add(new Room(
+                            rs.getInt("RoomID"),
+                            rs.getString("RoomNumber"),
+                            rs.getString("RoomType"),
+                            rs.getString("Amenities"),
+                            rs.getDouble("Rate"),
+                            rs.getString("Status")
+                    ));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            return rooms;
         }
 
         // Getters and Setters
