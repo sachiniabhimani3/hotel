@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class paymentModel {
 
@@ -89,12 +91,12 @@ public class paymentModel {
         }
     }
     public boolean addPayment(int bookingId, double amount, LocalDate paymentDate, String paymentMethod, String status) throws SQLException {
-        String sql = "INSERT INTO payments (booking_id, amount, payment_date, payment_method, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO payments (BookingID, Amount, Date, Method, Status) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnector.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, bookingId);
             stmt.setDouble(2, amount);
-            stmt.setDate(3, java.sql.Date.valueOf(paymentDate));
+            stmt.setDate(3, java.sql.Date.valueOf(paymentDate)); // Convert LocalDate to java.sql.Date
             stmt.setString(4, paymentMethod);
             stmt.setString(5, status);
             int affectedRows = stmt.executeUpdate();
@@ -147,6 +149,35 @@ public class paymentModel {
             return affectedRows > 0;
         }
     }
+
+    // Inside your paymentModel class
+
+    public List<Payment> getAllPayments() {
+        List<Payment> payments = new ArrayList<>();
+        // Your database code here to fill 'payments' with all payment records
+        // For example, using JDBC:
+        String sql = "SELECT * FROM payments";
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Payment payment = new Payment(
+                        rs.getInt("payment_id"),
+                        rs.getInt("booking_id"),
+                        rs.getDouble("amount"),
+                        rs.getDate("payment_date").toLocalDate(),
+                        rs.getString("payment_method"),
+                        rs.getString("status")
+                );
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            // Handle the SQL exception
+        }
+        return payments;
+    }
+
 
     // ****
 }

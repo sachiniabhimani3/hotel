@@ -25,23 +25,26 @@
       </image>
    </ImageView>
     <GridPane hgap="10" vgap="10">
-        <Label text="Customer ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="customerIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label text="Booking ID (Update/ Delete):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="bookingIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label text="Room ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="roomIdField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="Customer ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="customerIdField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label text="Check-In Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <DatePicker fx:id="checkInDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Room ID:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="roomIdField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-        <Label text="Check-Out Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <DatePicker fx:id="checkOutDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Check-In Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <DatePicker fx:id="checkInDatePicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label text="Number of Guests:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="numberOfGuestsField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label text="Check-Out Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <DatePicker fx:id="checkOutDatePicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label text="Special Requests:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <TextArea fx:id="specialRequestsArea" prefHeight="50.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Label text="Number of Guests:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField fx:id="numberOfGuestsField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label text="Special Requests:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <TextArea fx:id="specialRequestsArea" prefHeight="50.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints />
@@ -56,9 +59,9 @@
       </rowConstraints>
     </GridPane>
     <HBox alignment="CENTER" spacing="10">
-        <Button text="Add Booking" />
-        <Button text="Update Booking" />
-        <Button text="Cancel Booking" />
+        <Button text="Add Booking" onAction="#handleAddBookingAction" />
+        <Button text="Update Booking" onAction="#handleUpdateBookingAction" />
+        <Button text="Cancel Booking" onAction="#handleCancelBookingAction" />
         <Button text="View Bookings" />
     </HBox>
     <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Room Availability Calendar:" />

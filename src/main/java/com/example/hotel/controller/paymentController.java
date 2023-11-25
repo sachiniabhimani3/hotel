@@ -49,6 +49,7 @@ public class paymentController {
     @FXML
     protected void handleSaveBillDetailsAction() {
         if (validateFields()) {
+            calculateTotalAmount();
             savePaymentDetailsToDatabase();
         }
     }
@@ -102,7 +103,7 @@ public class paymentController {
     }
 
     private void saveBillDetailsToTextFile() {
-        String fileName = "BillDetails_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE) + ".txt";
+        String fileName = "BillDetails_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE) +"_"+bookingIdField.getText()+ ".txt";
         try (PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(fileName)))) {
             out.println("Payment Details");
             out.println("Booking ID: " + bookingIdField.getText());
