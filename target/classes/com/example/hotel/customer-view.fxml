@@ -55,7 +55,7 @@
         <Button text="Delete Customer" onAction="#handleDeleteCustomerAction"/>
         <Button text="Verify Reservation" onAction="#handleVerifyReservationAction"/>
         <Button text="Assign Room" onAction="#handleAssignRoomAction"/>
-        <Button text="Process Payment" onAction="#handleProcessPaymentAction"/>
+<!--        <Button text="Process Payment" onAction="#handleProcessPaymentAction"/>-->
         <Button text="Return Room Key" onAction="#handleReturnRoomKeyAction"/>
     </HBox>
 <!--    <TableView fx:id="customerTable">-->

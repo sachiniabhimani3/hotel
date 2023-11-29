@@ -1,12 +1,16 @@
 package com.example.hotel.controller;
 
 import com.example.hotel.model.bookingModel;
+
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.util.Callback;
+
+
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,8 +24,69 @@ public class bookingController {
     @FXML private TextField numberOfGuestsField;
     @FXML private TextArea specialRequestsArea;
     @FXML private TextField bookingIdField;
+    @FXML
+    private ListView<bookingModel.Book> bookingListView;
 
     private final bookingModel model = bookingModel.getInstance();
+
+    private void clearFields() {
+
+        customerIdField.clear();
+        roomIdField.clear();
+        checkInDatePicker.setValue(null);
+        checkOutDatePicker.setValue(null);
+        numberOfGuestsField.clear();
+        specialRequestsArea.clear();
+        bookingIdField.clear();
+
+    }
+
+    @FXML
+    private void refreshBookingList() {
+        System.out.println("aaaa");
+        ObservableList<bookingModel.Book> book = FXCollections.observableArrayList(bookingModel.getAllBooking());
+        bookingListView.setCellFactory(new Callback<ListView<bookingModel.Book>, ListCell<bookingModel.Book>>() {
+
+            @Override
+
+            public ListCell<bookingModel.Book> call(ListView<bookingModel.Book> bookListView) {
+                System.out.println("yyyy");
+                return new ListCell<bookingModel.Book>() {
+                    @Override
+                    protected void updateItem(bookingModel.Book book, boolean empty) {
+                        super.
+                                updateItem(book, empty);
+                        if (empty || book == null) {
+                            setText("xxx");
+                        } else {
+                            System.out.println("bbb");
+                            setText("ID: " + book.getBookingId() + "   |   Number: ");
+                        }
+                    }
+                };
+                //return null;
+            }
+
+//            @Override
+//            public ListCell<roomModel.Room> call(ListView<roomModel.Room> listView) {
+//                return new ListCell<roomModel.Room>() {
+//                    @Override
+//                    protected void updateItem(roomModel.Room room, boolean empty) {
+//                        super.updateItem(room, empty);
+//                        if (empty || room == null) {
+//                            setText(null);
+//                        } else {
+//
+//                            setText("ID: " + room.getRoomId() + "   |   Number: " + room.getRoomNumber() +
+//                                    "   |   Type: " + room.getRoomType() + "    |   Amenities: " + room.getAmenities() +
+//                                    "   |   Rate: " + room.getRate() + "    |   Status: " + room.getStatus());
+//                        }
+//                    }
+//                };
+//            }
+        });
+        //bookingListView.setItems(rooms);
+    }
 
     @FXML
     protected void handleUpdateBookingAction() {
@@ -36,7 +101,8 @@ public class bookingController {
             String specialRequests = specialRequestsArea.getText();
 
             try {
-                boolean isUpdated = model.updateBooking(bookingId, customerId, roomId, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+                boolean isUpdated = bookingModel.updateBooking(bookingId, customerId, roomId, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+                clearFields();
                 if (isUpdated) {
                     showAlertDialog(AlertType.INFORMATION, "Success", "Booking updated successfully.");
                 } else {
@@ -55,7 +121,8 @@ public class bookingController {
             int bookingId = Integer.parseInt(bookingIdField.getText());
 
             try {
-                boolean isCancelled = model.cancelBooking(bookingId);
+                boolean isCancelled = bookingModel.cancelBooking(bookingId);
+                clearFields();
                 if (isCancelled) {
                     showAlertDialog(AlertType.INFORMATION, "Success", "Booking canceled successfully.");
                 } else {
@@ -76,7 +143,7 @@ public class bookingController {
         return true;
     }
 
-    // ... other methods
+
 
     @FXML
     protected void handleAddBookingAction() {
@@ -88,7 +155,9 @@ public class bookingController {
             int numberOfGuests = Integer.parseInt(numberOfGuestsField.getText());
             String specialRequests = specialRequestsArea.getText();
 
-            boolean isAdded = model.addBooking(customerId, roomId, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+
+            boolean isAdded = bookingModel.addBooking(customerId, roomId, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+            clearFields();
             if (isAdded) {
                 showAlertDialog(AlertType.INFORMATION, "Success", "Booking added successfully.");
                 // Clear the form or update the UI as needed
@@ -120,4 +189,11 @@ public class bookingController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
+
+
+
+
+
 }
