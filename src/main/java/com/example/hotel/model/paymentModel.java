@@ -1,6 +1,8 @@
 package com.example.hotel.model;
 
 import com.example.hotel.db.DBConnector;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +105,29 @@ public class paymentModel {
             return affectedRows > 0;
         }
     }
+    public static ObservableList<String> getAllPaymentsForListView() {
+        ObservableList<String> payments = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM payments";
 
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String paymentDetails = "Payment ID: " + rs.getInt("PaymentID") +
+                        " | Booking ID: " + rs.getInt("BookingID") +
+                        " | Amount: " + rs.getDouble("Amount") +
+                        " | Date: " + rs.getDate("Date") +
+                        " | Method: " + rs.getString("Method")+
+                        " | Status: " + rs.getString("Status");
+                payments.add(paymentDetails);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return payments;
+    }
     public Payment getPayment(int paymentId) throws SQLException {
         String sql = "SELECT * FROM payments WHERE payment_id = ?";
         try (Connection conn = DBConnector.connect();

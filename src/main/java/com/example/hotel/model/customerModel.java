@@ -1,6 +1,8 @@
 package com.example.hotel.model;
 
 import com.example.hotel.db.DBConnector;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 
@@ -18,6 +20,53 @@ public class customerModel {
             instance = new customerModel();
         }
         return instance;
+    }
+
+    public static boolean Assignment(Integer roomField, String CustomerField) {
+
+
+
+        String sql1 = "SELECT * FROM rooms";
+
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql1)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                if(!"available".equals(rs.getString("status")))
+                {
+                    return false;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        String sql = "UPDATE rooms SET Status = ? WHERE RoomID = ?";
+        try (Connection connection = DBConnector.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, CustomerField);
+            preparedStatement.setInt(2, roomField);
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean keyReturn(Integer roomField) {
+        String sql = "UPDATE rooms SET Status = ? WHERE RoomID = ?";
+        try (Connection connection = DBConnector.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+             preparedStatement.setString(1, "Available");
+             preparedStatement.setInt(2, roomField);
+
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -65,7 +114,29 @@ public class customerModel {
     }
 
 
+    public static ObservableList<String> getAllCustomersForListView() {
+        ObservableList<String> customers = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM Customers";
 
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String customerDetails = "Customer ID: " + rs.getInt("CustomerID") +
+                        " | First Name: " + rs.getString("FirstName") +
+                        " | Last Name: " + rs.getString("LastName") +
+                        " | Phone Number: " + rs.getString("PhoneNumber") +
+                        " | Email: " + rs.getString("Email") +
+                        " | Address: " + rs.getString("Address");
+                customers.add(customerDetails);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return customers;
+    }
 
 
     // Add a customer to the database

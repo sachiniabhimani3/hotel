@@ -2,10 +2,13 @@ package com.example.hotel.controller;
 
 
 
+import com.example.hotel.model.bookingModel;
 import com.example.hotel.model.customerModel;
 import com.example.hotel.model.customerModel.Customer;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -15,6 +18,7 @@ import java.sql.SQLException;
 public class customerController {
 
 
+    @FXML private TextField roomField;
     @FXML private TextField customerIdField;
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
@@ -70,6 +74,7 @@ public class customerController {
                 boolean success = model.updateCustomer(customer);
                 if (success) {
                     showAlertDialog(AlertType.INFORMATION, "Success", "Customer updated successfully!");
+                    clearForm();
                 } else {
                     showAlertDialog(AlertType.ERROR, "Error", "Failed to update customer.");
                 }
@@ -78,6 +83,21 @@ public class customerController {
             }
         }
     }
+
+    @FXML
+    private ListView<String> customerListView;
+    @FXML
+    private void refreshCustomerList() {
+        try {
+            ObservableList<String> customers = customerModel.getAllCustomersForListView();
+
+            customerListView.setItems(customers);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception appropriately, perhaps show an error dialog.
+        }
+    }
+
 
     @FXML
     protected void handleDeleteCustomerAction() {
@@ -111,6 +131,15 @@ public class customerController {
 
     @FXML
     protected void handleAssignRoomAction() {
+        if(customerModel.Assignment(Integer.parseInt(roomField.getText()), customerIdField.getText()))
+        {
+            clearForm();
+            showAlertDialog(AlertType.INFORMATION, "Room Assignment", "The room was assigned successfully.");
+        }
+        else
+        {
+            showAlertDialog(AlertType.WARNING, "Room", "The room is already assigned");
+        }
     }
 
     @FXML
@@ -119,6 +148,15 @@ public class customerController {
 
     @FXML
     protected void handleReturnRoomKeyAction() {
+        if(customerModel.keyReturn(Integer.parseInt(roomField.getText())))
+        {
+            clearForm();
+            showAlertDialog(AlertType.INFORMATION, "Key Return", "Key was returned Successfully.");
+        }
+        else
+        {
+            showAlertDialog(AlertType.WARNING, "Key Return", "Key was not returned Successfully.");
+        }
     }
 
     private boolean validateInput() {

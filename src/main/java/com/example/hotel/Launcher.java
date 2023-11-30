@@ -1,6 +1,9 @@
 package com.example.hotel;
 
+import com.example.hotel.db.DBConnector;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,6 +14,10 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class Launcher extends Application {
@@ -87,8 +94,31 @@ public class Launcher extends Application {
 
     // Simple password check (replace with a real password check in a real app)
     private static boolean checkPassword(String enteredPassword) {
-        final String correctPassword = "test123"; // This should be securely stored and hashed
-        return enteredPassword.equals(correctPassword);
+
+
+
+            String sql = "SELECT * FROM user_credentials";
+
+            try (Connection conn = DBConnector.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    String temp=rs.getString("password");
+                    if(enteredPassword.equals(temp))
+                    {
+                        return true;
+                    }
+
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+
+            }
+
+
+       // final String correctPassword = "test123"; // This should be securely stored and hashed
+        return false;
     }
 
     // Method to load other views with password protection for certain views

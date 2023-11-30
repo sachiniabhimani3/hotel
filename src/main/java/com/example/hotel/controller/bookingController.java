@@ -3,13 +3,10 @@ package com.example.hotel.controller;
 import com.example.hotel.model.bookingModel;
 
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.util.Callback;
-
 
 
 import java.sql.SQLException;
@@ -25,7 +22,7 @@ public class bookingController {
     @FXML private TextArea specialRequestsArea;
     @FXML private TextField bookingIdField;
     @FXML
-    private ListView<bookingModel.Book> bookingListView;
+    private ListView<String> bookingListView;
 
     private final bookingModel model = bookingModel.getInstance();
 
@@ -41,52 +38,19 @@ public class bookingController {
 
     }
 
+
     @FXML
     private void refreshBookingList() {
-        System.out.println("aaaa");
-        ObservableList<bookingModel.Book> book = FXCollections.observableArrayList(bookingModel.getAllBooking());
-        bookingListView.setCellFactory(new Callback<ListView<bookingModel.Book>, ListCell<bookingModel.Book>>() {
-
-            @Override
-
-            public ListCell<bookingModel.Book> call(ListView<bookingModel.Book> bookListView) {
-                System.out.println("yyyy");
-                return new ListCell<bookingModel.Book>() {
-                    @Override
-                    protected void updateItem(bookingModel.Book book, boolean empty) {
-                        super.
-                                updateItem(book, empty);
-                        if (empty || book == null) {
-                            setText("xxx");
-                        } else {
-                            System.out.println("bbb");
-                            setText("ID: " + book.getBookingId() + "   |   Number: ");
-                        }
-                    }
-                };
-                //return null;
-            }
-
-//            @Override
-//            public ListCell<roomModel.Room> call(ListView<roomModel.Room> listView) {
-//                return new ListCell<roomModel.Room>() {
-//                    @Override
-//                    protected void updateItem(roomModel.Room room, boolean empty) {
-//                        super.updateItem(room, empty);
-//                        if (empty || room == null) {
-//                            setText(null);
-//                        } else {
-//
-//                            setText("ID: " + room.getRoomId() + "   |   Number: " + room.getRoomNumber() +
-//                                    "   |   Type: " + room.getRoomType() + "    |   Amenities: " + room.getAmenities() +
-//                                    "   |   Rate: " + room.getRate() + "    |   Status: " + room.getStatus());
-//                        }
-//                    }
-//                };
-//            }
-        });
-        //bookingListView.setItems(rooms);
+        try {
+            ObservableList<String> bookings = bookingModel.getAllBookingsForListView();
+            bookingListView.setItems(bookings);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception appropriately, perhaps show an error dialog.
+        }
     }
+
+
 
     @FXML
     protected void handleUpdateBookingAction() {
@@ -146,17 +110,21 @@ public class bookingController {
 
 
     @FXML
-    protected void handleAddBookingAction() {
+    protected void handleAddBookingAction() throws SQLException {
         if (validateBookingForm()) {
             int customerId = Integer.parseInt(customerIdField.getText());
             int roomId = Integer.parseInt(roomIdField.getText());
             LocalDate checkInDate = checkInDatePicker.getValue();
             LocalDate checkOutDate = checkOutDatePicker.getValue();
+
+            boolean isAdded = false;
+
             int numberOfGuests = Integer.parseInt(numberOfGuestsField.getText());
             String specialRequests = specialRequestsArea.getText();
 
-
-            boolean isAdded = bookingModel.addBooking(customerId, roomId, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+            if(bookingModel.isRoomAvailable(roomId,checkInDate,checkOutDate)) {
+                isAdded = bookingModel.addBooking(customerId, roomId, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+            }
             clearFields();
             if (isAdded) {
                 showAlertDialog(AlertType.INFORMATION, "Success", "Booking added successfully.");

@@ -63,10 +63,10 @@
         <Button text="Add Booking" onAction="#handleAddBookingAction" />
         <Button text="Update Booking" onAction="#handleUpdateBookingAction" />
         <Button text="Cancel Booking" onAction="#handleCancelBookingAction" />
-        <Button text="View Bookings" onAction="#refreshBookingList"/>
+        <Button text="View All Bookings" onAction="#refreshBookingList"/>
     </HBox>
     <Label style="-fx-font-size: 10px; -fx-font-weight: bold;" text="Room Availability Calendar:" />
-    <VBox fx:id="calendarContainer">
+
         <HBox spacing="0" alignment="CENTER">
             <!--        <Button text="Refresh List" onAction="#handleRefreshListAction" />-->
             <!-- Additional buttons can be added here if needed -->
@@ -74,7 +74,7 @@
 
         </HBox>
 
-    </VBox>
+
 
 
 

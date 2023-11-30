@@ -1,11 +1,10 @@
 package com.example.hotel.controller;
 
+import com.example.hotel.model.customerModel;
 import com.example.hotel.model.paymentModel;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
@@ -102,6 +101,19 @@ public class paymentController {
         }
     }
 
+    @FXML
+    private ListView<String> paymentListView;
+    @FXML
+    private void refreshCustomerList() {
+        try {
+            ObservableList<String> payments = paymentModel.getAllPaymentsForListView();
+
+            paymentListView.setItems(payments);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
     private void saveBillDetailsToTextFile() {
         String fileName = "BillDetails_" + LocalDate.now().format(DateTimeFormatter.ISO_DATE) +"_"+bookingIdField.getText()+ ".txt";
         try (PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(fileName)))) {

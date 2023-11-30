@@ -2,6 +2,8 @@ package com.example.hotel.model;
 
 import com.example.hotel.db.DBConnector;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.util.Callback;
 
 import java.sql.*;
@@ -171,6 +173,31 @@ public class bookingModel {
         return bookingUpdated;
     }
 
+    public static ObservableList<String> getAllBookingsForListView() {
+        ObservableList<String> bookings = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM Bookings";
+
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String bookingDetails = "Booking ID: " + rs.getInt("BookingID") +
+                        " | Customer ID: " + rs.getInt("CustomerID") +
+                        " | Room ID: " + rs.getInt("RoomID") +
+                        " | Check-In Date: " + rs.getDate("CheckInDate") +
+                        " | Check-Out Date: " + rs.getDate("CheckOutDate") +
+                        " | Number of Guests: " + rs.getInt("NumberOfGuests") +
+                        " | Special Requests: " + rs.getString("SpecialRequests");
+                bookings.add(bookingDetails);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return bookings;
+    }
+
     public static ArrayList<Book> getAllBooking() {
         List<Book> book = new ArrayList<>();
         String sql = "SELECT * FROM bookings";
@@ -192,6 +219,23 @@ public class bookingModel {
             System.out.println(e.getMessage());
         }
         return (ArrayList<Book>) book;
+    }
+
+    public static boolean isRoomAvailable(int roomId, LocalDate checkInDate, LocalDate checkOutDate) throws SQLException {
+        String checkAvailabilitySQL = "SELECT COUNT(*) FROM Bookings WHERE RoomID = ? AND NOT (CheckOutDate <= ? OR CheckInDate >= ?)";
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(checkAvailabilitySQL)) {
+            stmt.setInt(1, roomId);
+            stmt.setDate(2, Date.valueOf(checkInDate));
+            stmt.setDate(3, Date.valueOf(checkOutDate));
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0;
+            }
+        }
+        return false;
+
     }
 
     public static class Booking {
@@ -332,102 +376,6 @@ public class bookingModel {
             return book;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        public boolean isRoomAvailable(int roomId, LocalDate checkInDate, LocalDate checkOutDate) throws SQLException {
-            String checkAvailabilitySQL = "SELECT COUNT(*) FROM Bookings WHERE RoomID = ? AND NOT (CheckOutDate <= ? OR CheckInDate >= ?)";
-
-            try (Connection conn = DBConnector.connect();
-                 PreparedStatement stmt = conn.prepareStatement(checkAvailabilitySQL)) {
-                stmt.setInt(1, roomId);
-                stmt.setDate(2, Date.valueOf(checkInDate));
-                stmt.setDate(3, Date.valueOf(checkOutDate));
-
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt(1) == 0;
-                }
-            }
-            return false;
-        }
-
-        public void makeBooking(int customerId, int roomId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, String specialRequests) throws SQLException {
-            String insertBookingSQL = "INSERT INTO Bookings (CustomerID, RoomID, CheckInDate, CheckOutDate, NumberOfGuests, SpecialRequests) VALUES (?, ?, ?, ?, ?, ?)";
-
-            try (Connection conn = DBConnector.connect();
-                 PreparedStatement stmt = conn.prepareStatement(insertBookingSQL)) {
-                stmt.setInt(1, customerId);
-                stmt.setInt(2, roomId);
-                stmt.setDate(3, Date.valueOf(checkInDate));
-                stmt.setDate(4, Date.valueOf(checkOutDate));
-                stmt.setInt(5, numberOfGuests);
-                stmt.setString(6, specialRequests);
-
-                stmt.executeUpdate();
-            }
-        }
-
-        public List<Booking> viewBookingsForCustomer(int customerId) throws SQLException {
-            List<Booking> bookings = new ArrayList<>();
-            String selectBookingsSQL = "SELECT * FROM Bookings WHERE CustomerID = ?";
-
-            try (Connection conn = DBConnector.connect();
-                 PreparedStatement stmt = conn.prepareStatement(selectBookingsSQL)) {
-                stmt.setInt(1, customerId);
-
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    bookings.add(new Booking(
-                            rs.getInt("BookingID"),
-                            rs.getInt("CustomerID"),
-                            rs.getInt("RoomID"),
-                            rs.getDate("CheckInDate").toLocalDate(),
-                            rs.getDate("CheckOutDate").toLocalDate(),
-                            rs.getInt("NumberOfGuests"),
-                            rs.getString("SpecialRequests")
-                    ));
-                }
-            }
-            return bookings;
-        }
-
-
-
-
-
-
-        public List<Booking> getAllBookings() throws SQLException {
-            List<Booking> bookings = new ArrayList<>();
-            String selectAllBookingsSQL = "SELECT * FROM Bookings";
-
-            try (Connection conn = DBConnector.connect();
-                 PreparedStatement stmt = conn.prepareStatement(selectAllBookingsSQL)) {
-
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    bookings.add(new Booking(
-                            rs.getInt("BookingID"),
-                            rs.getInt("CustomerID"),
-                            rs.getInt("RoomID"),
-                            rs.getDate("CheckInDate").toLocalDate(),
-                            rs.getDate("CheckOutDate").toLocalDate(),
-                            rs.getInt("NumberOfGuests"),
-                            rs.getString("SpecialRequests")
-                    ));
-                }
-            }
-            return bookings;
-        }
 
 
         public int getBookingId() {
